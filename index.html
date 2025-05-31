@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PROFILE</title>
+    <title>SYSTEM ACCESS</title>
     <style>
         body {
-            background-color: #111;
-            color: #ccc;
+            background-color: #000;
+            color: #0f0;
             font-family: 'Courier New', monospace;
             display: flex;
             justify-content: center;
@@ -15,26 +15,91 @@
             height: 100vh;
             margin: 0;
             overflow: hidden;
+            position: relative;
+        }
+        
+        /* افکت اسکن لاین */
+        body::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(to bottom, rgba(0, 255, 0, 0.1), rgba(0, 255, 0, 0.7));
+            animation: scanline 6s linear infinite;
+        }
+        
+        @keyframes scanline {
+            0% { top: -50px; }
+            100% { top: 100%; }
+        }
+        
+        /* افکت نویز */
+        .noise {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABGSURBVGhD7cExAQAwDMCg+zfd2VAp5FEJkCRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiTpBx9sAhH0f1KQAAAAAElFTkSuQmCC');
+            opacity: 0.03;
+            pointer-events: none;
+            z-index: 100;
         }
         
         .container {
             text-align: center;
             padding: 2rem;
-            border: 1px solid #333;
+            border: 1px solid #0f0;
             max-width: 500px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* افکت گلیچ */
+        .container::before {
+            content: "";
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            background: linear-gradient(45deg, 
+                transparent 45%,
+                rgba(0, 255, 0, 0.1) 45%,
+                rgba(0, 255, 0, 0.1) 55%,
+                transparent 55%);
+            background-size: 5px 5px;
+            animation: glitch 2s linear infinite;
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        @keyframes glitch {
+            0% { opacity: 0; transform: translate(0); }
+            2% { opacity: 0.3; transform: translate(-5px, 5px); }
+            4% { opacity: 0; transform: translate(0); }
+            60% { opacity: 0; transform: translate(0); }
+            61% { opacity: 0.3; transform: translate(10px, -5px); }
+            63% { opacity: 0; transform: translate(0); }
+            100% { opacity: 0; transform: translate(0); }
         }
         
         h1 {
-            color: #666;
+            color: #0f0;
             margin-bottom: 2rem;
             font-size: 1.5rem;
+            text-shadow: 0 0 5px #0f0;
+            position: relative;
         }
         
         .status {
-            color: #f33;
+            color: #0f0;
             margin: 2rem 0;
             font-size: 1.2rem;
+            text-shadow: 0 0 3px #0f0;
         }
         
         .social-links {
@@ -45,21 +110,35 @@
         }
         
         .social-link {
-            color: #666;
+            color: #0a0;
             text-decoration: none;
-            border: 1px solid #333;
+            border: 1px solid #0a0;
             padding: 0.5rem 1rem;
             transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .social-link::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 0, 0.2), transparent);
+            transition: all 0.5s;
         }
         
         .social-link:hover {
-            color: #fff;
-            border-color: #666;
+            color: #0f0;
+            border-color: #0f0;
+            box-shadow: 0 0 10px #0f0;
         }
         
-        .twitter:hover { color: #1DA1F2; border-color: #1DA1F2; }
-        .instagram:hover { color: #E1306C; border-color: #E1306C; }
-        .telegram:hover { color: #0088cc; border-color: #0088cc; }
+        .social-link:hover::before {
+            left: 100%;
+        }
         
         .cursor {
             animation: blink 1s infinite;
@@ -69,21 +148,64 @@
             0%, 100% { opacity: 1; }
             50% { opacity: 0; }
         }
+        
+        /* افکت تایپینگ */
+        .typing {
+            display: inline-block;
+        }
+        
+        .typing::after {
+            content: "|";
+            animation: typing 0.5s infinite;
+        }
+        
+        @keyframes typing {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
     </style>
 </head>
 <body>
+    <div class="noise"></div>
     <div class="container">
-        <h1>USER PROFILE ACCESS</h1>
+        <h1>SYSTEM ACCESS // USER PROFILE</h1>
         
         <div class="status">
-            > DATA NOT AVAILABLE <span class="cursor">_</span>
+            > <span class="typing">DATA NOT AVAILABLE</span> <span class="cursor">_</span>
         </div>
         
         <div class="social-links">
-            <a href="https://x.com/mroff_ir?s=21" class="social-link twitter">Twitter</a>
-            <a href="https://www.instagram.com/0x65._?igsh=cXUza3VnZzN1YW4=" class="social-link instagram">Instagram</a>
-            <a href="https://t.me/isRoot_u" class="social-link telegram">Telegram</a>
+            <a href="https://x.com/mroff_ir?s=21" class="social-link twitter">[TWITTER]</a>
+            <a href="https://www.instagram.com/0x65._?igsh=cXUza3VnZzN1YW4=" class="social-link instagram">[INSTAGRAM]</a>
+            <a href="https://t.me/isRoot_u" class="social-link telegram">[TELEGRAM]</a>
         </div>
     </div>
+
+    <script>
+        // افکت تایپینگ پیشرفته
+        document.addEventListener('DOMContentLoaded', function() {
+            const elements = document.querySelectorAll('.typing');
+            
+            elements.forEach(el => {
+                const text = el.textContent;
+                el.textContent = '';
+                
+                let i = 0;
+                const typing = setInterval(() => {
+                    if (i < text.length) {
+                        el.textContent += text.charAt(i);
+                        i++;
+                    } else {
+                        clearInterval(typing);
+                    }
+                }, 100);
+            });
+            
+            // افکت گلیچ تصادفی
+            setInterval(() => {
+                document.querySelector('.container').style.transform = `translate(${Math.random() * 5 - 2.5}px, ${Math.random() * 5 - 2.5}px)`;
+            }, 3000);
+        });
+    </script>
 </body>
 </html>
