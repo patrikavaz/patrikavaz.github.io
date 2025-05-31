@@ -1,23 +1,89 @@
 <!DOCTYPE html>
-<html lang="fa" dir="rtl">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hearian</title>
+    <title>PROFILE</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            text-align: center;
+            background-color: #111;
+            color: #ccc;
+            font-family: 'Courier New', monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
             margin: 0;
-            padding: 20px;
-            line-height: 1.6;
+            overflow: hidden;
         }
+        
+        .container {
+            text-align: center;
+            padding: 2rem;
+            border: 1px solid #333;
+            max-width: 500px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+        }
+        
         h1 {
-            color: #333;
+            color: #666;
+            margin-bottom: 2rem;
+            font-size: 1.5rem;
+        }
+        
+        .status {
+            color: #f33;
+            margin: 2rem 0;
+            font-size: 1.2rem;
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .social-link {
+            color: #666;
+            text-decoration: none;
+            border: 1px solid #333;
+            padding: 0.5rem 1rem;
+            transition: all 0.3s;
+        }
+        
+        .social-link:hover {
+            color: #fff;
+            border-color: #666;
+        }
+        
+        .twitter:hover { color: #1DA1F2; border-color: #1DA1F2; }
+        .instagram:hover { color: #E1306C; border-color: #E1306C; }
+        .telegram:hover { color: #0088cc; border-color: #0088cc; }
+        
+        .cursor {
+            animation: blink 1s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
         }
     </style>
 </head>
 <body>
-    <h1>Hello.World! </h1>
+    <div class="container">
+        <h1>USER PROFILE ACCESS</h1>
+        
+        <div class="status">
+            > DATA NOT AVAILABLE <span class="cursor">_</span>
+        </div>
+        
+        <div class="social-links">
+            <a href="https://x.com/mroff_ir?s=21" class="social-link twitter">Twitter</a>
+            <a href="https://www.instagram.com/0x65._?igsh=cXUza3VnZzN1YW4=" class="social-link instagram">Instagram</a>
+            <a href="https://t.me/isRoot_u" class="social-link telegram">Telegram</a>
+        </div>
+    </div>
 </body>
 </html>
