@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>SYSTEM ACCESS</title>
     <style>
-        /* Reset و تنظیمات پایه */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -27,7 +26,6 @@
             line-height: 1.5;
         }
         
-        /* افکت‌های بصری */
         .noise {
             position: fixed;
             top: 0;
@@ -52,7 +50,6 @@
             margin: 0 auto;
         }
         
-        /* تنظیمات موبایل */
         @media (max-width: 768px) {
             .container {
                 padding: 1rem;
@@ -160,7 +157,6 @@
             50% { opacity: 0; }
         }
         
-        /* افکت تایپینگ بهبود یافته */
         .typing {
             display: inline-block;
             overflow: hidden;
@@ -172,7 +168,7 @@
 <body>
     <div class="noise"></div>
     <div class="container">
-        <h1>SYSTEM ACCESS // USER PROFILE</h1>
+        <h1>USER PROFILE</h1>
         
         <div class="status-line">
             <span class="prompt">></span>
@@ -182,17 +178,16 @@
         </div>
         
         <div class="social-links">
-            <a href="https://x.com/mroff_ir?s=21" class="social-link">[TWITTER]</a>
-            <a href="https://www.instagram.com/0x65._?igsh=cXUza3VnZzN1YW4=" class="social-link">[INSTAGRAM]</a>
-            <a href="https://t.me/isRoot_u" class="social-link">[TELEGRAM]</a>
+            <a href="https://x.com/mroff_ir?s=21" class="social-link">[ X ]</a>
+            <a href="https://www.instagram.com/0x65._?igsh=cXUza3VnZzN1YW4=" class="social-link">[ INSTAGRAM ]</a>
+            <a href="https://t.me/isRoot_u" class="social-link">[ TELEGRAM ]</a>
         </div>
     </div>
 
     <script>
-        // اسکریپت بهبود یافته برای تایپینگ
         document.addEventListener('DOMContentLoaded', function() {
             const typingElement = document.querySelector('.typing');
-            const text = 'DATA NOT AVAILABLE';
+            const text = 'Arian is here :)';
             let i = 0;
             
             function typeWriter() {
@@ -203,10 +198,8 @@
                 }
             }
             
-            // شروع افکت تایپینگ با تأخیر
             setTimeout(typeWriter, 500);
             
-            // تشخیص موبایل و غیرفعال کردن افکت‌های سنگین
             const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
             
             if (!isMobile) {
