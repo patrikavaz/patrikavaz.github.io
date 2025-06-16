@@ -173,7 +173,7 @@
         <div class="status-line">
             <span class="prompt">></span>
             <span class="status-text">
-                <span class="typing"></span><span class="cursor">_</span>
+                <span class="typing"></span><span class="cursor">|</span>
             </span>
         </div>
         
@@ -189,7 +189,7 @@
             const typingElement = document.querySelector('.typing');
             const text = 'Hello world! :)';
             let i = 0;
-            alert(origin)
+            
             function typeWriter() {
                 if (i < text.length) {
                     typingElement.textContent += text.charAt(i);
