@@ -168,8 +168,8 @@
 <body>
     <div class="noise"></div>
     <div class="container">
-        <h1>USER PROFILE</h1>
-        
+<!--         <h1>NOT</h1>
+         -->
         <div class="status-line">
             <span class="prompt">></span>
             <span class="status-text">
@@ -187,9 +187,9 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const typingElement = document.querySelector('.typing');
-            const text = 'Arian is here :)';
+            const text = 'Hello world! :)';
             let i = 0;
-            
+            alert(origin)
             function typeWriter() {
                 if (i < text.length) {
                     typingElement.textContent += text.charAt(i);
