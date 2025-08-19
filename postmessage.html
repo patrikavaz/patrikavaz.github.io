@@ -1,144 +1,196 @@
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<!DOCTYPE html>
+<html lang="en">
 
+<!-- Mirrored from poc.0xrz.me/postmessage.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 19 Aug 2025 09:04:41 GMT -->
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta name="description" content="HTTrack is an easy-to-use website mirror utility. It allows you to download a World Wide website from the Internet to a local directory,building recursively all structures, getting html, images, and other files from the server to your computer. Links are rebuiltrelatively so that you can freely browse to the local site (works with any browser). You can mirror several sites together so that you can jump from one toanother. You can, also, update an existing mirror site, or resume an interrupted download. The robot is fully configurable, with an integrated help" />
-	<meta name="keywords" content="httrack, HTTRACK, HTTrack, winhttrack, WINHTTRACK, WinHTTrack, offline browser, web mirror utility, aspirateur web, surf offline, web capture, www mirror utility, browse offline, local  site builder, website mirroring, aspirateur www, internet grabber, capture de site web, internet tool, hors connexion, unix, dos, windows 95, windows 98, solaris, ibm580, AIX 4.0, HTS, HTGet, web aspirator, web aspirateur, libre, GPL, GNU, free software" />
-	<title>Local index - HTTrack Website Copier</title>
-  <!-- Mirror and index made by HTTrack Website Copier/3.49-2 [XR&CO'2014] -->
-	<style type="text/css">
-	<!--
-
-body {
-	margin: 0;  padding: 0;  margin-bottom: 15px;  margin-top: 8px;
-	background: #77b;
-}
-body, td {
-	font: 14px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
-	}
-
-#subTitle {
-	background: #000;  color: #fff;  padding: 4px;  font-weight: bold; 
-	}
-
-#siteNavigation a, #siteNavigation .current {
-	font-weight: bold;  color: #448;
-	}
-#siteNavigation a:link    { text-decoration: none; }
-#siteNavigation a:visited { text-decoration: none; }
-
-#siteNavigation .current { background-color: #ccd; }
-
-#siteNavigation a:hover   { text-decoration: none;  background-color: #fff;  color: #000; }
-#siteNavigation a:active  { text-decoration: none;  background-color: #ccc; }
-
-
-a:link    { text-decoration: underline;  color: #00f; }
-a:visited { text-decoration: underline;  color: #000; }
-a:hover   { text-decoration: underline;  color: #c00; }
-a:active  { text-decoration: underline; }
-
-#pageContent {
-	clear: both;
-	border-bottom: 6px solid #000;
-	padding: 10px;  padding-top: 20px;
-	line-height: 1.65em;
-	background-image: url(backblue.gif);
-	background-repeat: no-repeat;
-	background-position: top right;
-	}
-
-#pageContent, #siteNavigation {
-	background-color: #ccd;
-	}
-
-
-.imgLeft  { float: left;   margin-right: 10px;  margin-bottom: 10px; }
-.imgRight { float: right;  margin-left: 10px;   margin-bottom: 10px; }
-
-hr { height: 1px;  color: #000;  background-color: #000;  margin-bottom: 15px; }
-
-h1 { margin: 0;  font-weight: bold;  font-size: 2em; }
-h2 { margin: 0;  font-weight: bold;  font-size: 1.6em; }
-h3 { margin: 0;  font-weight: bold;  font-size: 1.3em; }
-h4 { margin: 0;  font-weight: bold;  font-size: 1.18em; }
-
-.blak { background-color: #000; }
-.hide { display: none; }
-.tableWidth { min-width: 400px; }
-
-.tblRegular       { border-collapse: collapse; }
-.tblRegular td    { padding: 6px;  background-image: url(fade.gif);  border: 2px solid #99c; }
-.tblHeaderColor, .tblHeaderColor td { background: #99c; }
-.tblNoBorder td   { border: 0; }
-
-
-// -->
-</style>
-
+  <meta charset="UTF-8">
+  <title>postMessage Demo</title>
+  <script src="https://cdn.tailwindcss.com/"></script>
+  <style>
+    .log-entry .details {
+      display: none;
+      max-height: 200px;
+      overflow: auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .log-entry.active .details {
+      display: block;
+    }
+    .log-entry {
+      transition: all 0.3s ease;
+    }
+  </style>
 </head>
+<body class="bg-gray-50 text-gray-800 p-6 font-sans">
+  <div class="max-w-screen-xl mx-auto space-y-6">
+    <h1 class="text-2xl font-bold">postMessage Communication Demo</h1>
 
-<table width="76%" border="0" align="center" cellspacing="0" cellpadding="3" class="tableWidth">
-	<tr>
-	<td id="subTitle">HTTrack Website Copier - Open Source offline browser</td>
-	</tr>
-</table>
-<table width="76%" border="0" align="center" cellspacing="0" cellpadding="0" class="tableWidth">
-<tr class="blak">
-<td>
-	<table width="100%" border="0" align="center" cellspacing="1" cellpadding="0">
-	<tr>
-	<td colspan="6"> 
-		<table width="100%" border="0" align="center" cellspacing="0" cellpadding="10">
-		<tr> 
-		<td id="pageContent"> 
-<!-- ==================== End prologue ==================== -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="space-y-4">
+        <div>
+          <label class="block font-semibold">Iframe URL:</label>
+          <div class="flex gap-2">
+            <input type="text" id="iframeUrl" value="about:blank" class="w-full border px-2 py-1 rounded" />
+            <button onclick="loadIframe()" class="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600">Load</button>
+          </div>
+        </div>
+        <div>
+          <label class="block font-semibold">Iframe Name:</label>
+          <input type="text" id="iframeName" class="w-full border px-2 py-1 rounded" placeholder="myIframe" />
+        </div>
+        <div>
+          <label class="block font-semibold">Iframe Sandbox:</label>
+          <div class="grid grid-cols-2 gap-2">
+            <label><input type="checkbox" class="iframe-attr" value="allow-downloads"> allow-downloads</label>
+            <label><input type="checkbox" class="iframe-attr" value="allow-forms"> allow-forms</label>
+            <label><input type="checkbox" class="iframe-attr" value="allow-modals"> allow-modals</label>
+            <label><input type="checkbox" class="iframe-attr" value="allow-popups"> allow-popups</label>
+            <label><input type="checkbox" class="iframe-attr" value="allow-popups-to-escape-sandbox"> allow-popups-to-escape-sandbox</label>
+            <label><input type="checkbox" class="iframe-attr" value="allow-presentation"> allow-presentation</label>
+            <label><input type="checkbox" class="iframe-attr" value="allow-same-origin"> allow-same-origin</label>
+            <label><input type="checkbox" class="iframe-attr" value="allow-scripts"> allow-scripts</label>
+            <label><input type="checkbox" class="iframe-attr" value="allow-storage-access-by-user-activation"> allow-storage-access-by-user-activation</label>
+            <label><input type="checkbox" class="iframe-attr" value="allow-top-navigation"> allow-top-navigation</label>
+          </div>
+        </div>
+        <div>
+          <h2 class="font-semibold mb-1">Iframe View</h2>
+          <iframe id="theIframe" class="w-full h-48 border rounded"></iframe>
+        </div>
+        <div>
+          <textarea id="msgToIframe" class="w-full border rounded p-2 font-mono">{"type":"toIframe","payload":"Hello iframe!"}</textarea>
+          <button onclick="sendToIframe()" class="mt-2 bg-green-500 text-white px-4 py-1 rounded hover:bg-green-600">Send to Iframe</button>
+        </div>
+      </div>
 
-	<meta name="generator" content="HTTrack Website Copier/3.x">
-	<TITLE>Local index - HTTrack</TITLE>
-</HEAD>
-<BODY>
-<H1 ALIGN=Center>Index of locally available sites:</H1>
-	<TABLE BORDER="0" WIDTH="100%" CELLSPACING="1" CELLPADDING="0">
-		<TR>
-			<TD BACKGROUND="fade.gif">
-				&middot;
-					<A HREF="poc.0xrz.me/postmessage.html">
-						postMessage Demo
-					</A>		
-			</TD>
-		</TR>
-	</TABLE>
-	<BR>
-	<BR>
-	<BR>
-  	<H6 ALIGN="RIGHT">
-	<I>Mirror and index made by HTTrack Website Copier [XR&amp;CO'2008]</I>
-	</H6>
-	<!-- Mirror and index made by HTTrack Website Copier/3.49-2 [XR&CO'2014] -->
-	<!-- Thanks for using HTTrack Website Copier! -->
-	<meta HTTP-EQUIV="Refresh" CONTENT="0; URL=poc.0xrz.me/postmessage.html">
+      <div class="space-y-4">
+        <div>
+          <label class="block font-semibold">New Window URL:</label>
+          <div class="flex gap-2">
+            <input type="text" id="windowUrl" value="about:blank" class="w-full border px-2 py-1 rounded" />
+            <button onclick="openWindow()" class="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600">Open</button>
+          </div>
+        </div>
+        <div>
+          <label class="block font-semibold">Window Name:</label>
+          <input type="text" id="windowName" placeholder="qwe" class="w-full border px-2 py-1 rounded" />
+        </div>
+        <div>
+          <label class="block font-semibold">Window Size (e.g., width=400,height=400):</label>
+          <input type="text" id="windowSize" placeholder="width=400,height=400" class="w-full border px-2 py-1 rounded" />
+        </div>
+        <div>
+          <label class="block font-semibold">Open In:</label>
+          <div class="flex items-center gap-4">
+            <label><input type="radio" name="openType" value="tab" checked> New Tab</label>
+            <label><input type="radio" name="openType" value="popup"> Popup Window</label>
+          </div>
+        </div>
+        <div>
+          <textarea id="msgToWindow" class="w-full border rounded p-2 font-mono">{"type":"toWindow","payload":"Hello new window!"}</textarea>
+          <button onclick="sendToWindow()" class="mt-2 bg-green-500 text-white px-4 py-1 rounded hover:bg-green-600">Send to Window</button>
+        </div>
+      </div>
+    </div>
 
+    <div class="bg-black text-green-400 p-4 rounded shadow">
+      <div class="flex justify-between items-center mb-2">
+        <h2 class="text-lg font-semibold text-white">Message Log</h2>
+        <button onclick="clearLog()" class="text-sm bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded">Clear Log</button>
+      </div>
+      <div id="logContainer" class="space-y-2 font-mono text-sm"></div>
+    </div>
+  </div>
 
-<!-- ==================== Start epilogue ==================== -->
-		</td>
-		</tr>
-		</table>
-	</td>
-	</tr>
-	</table>
-</td>
-</tr>
-</table>
+  <script>
+    let childWindow = null;
+    let iframe = document.getElementById("theIframe");
 
-<table width="76%" border="0" align="center" valign="bottom" cellspacing="0" cellpadding="0">
-	<tr>
-	<td id="footer"><small>&copy; 2008 Xavier Roche & other contributors - Web Design: Leto Kauler.</small></td>
-	</tr>
-</table>
+    function loadIframe() {
+      const url = document.getElementById("iframeUrl").value;
+      const name = document.getElementById("iframeName").value || undefined;
+      const checkboxes = document.querySelectorAll(".iframe-attr:checked");
+      const attrs = Array.from(checkboxes).map(cb => cb.value).join(" ");
 
+      const newIframe = document.createElement("iframe");
+      newIframe.id = "theIframe";
+      newIframe.className = "w-full h-48 border rounded";
+      if (attrs) newIframe.setAttribute("sandbox", attrs);
+      if (name) newIframe.setAttribute("name", name);
+      newIframe.src = url;
+
+      iframe.replaceWith(newIframe);
+      iframe = newIframe;
+    }
+
+    function openWindow() {
+      const url = document.getElementById("windowUrl").value;
+      const name = document.getElementById("windowName").value || "";
+      const features = document.getElementById("windowSize").value || "width=400,height=400";
+      const openType = document.querySelector("input[name='openType']:checked").value;
+
+      if (openType === "popup") {
+        childWindow = window.open(url, name, features);
+      } else {
+        childWindow = window.open(url, name);
+      }
+    }
+
+    function sendToIframe() {
+      try {
+        const msg = JSON.parse(document.getElementById("msgToIframe").value);
+        iframe.contentWindow.postMessage(msg, "*");
+      } catch (e) {
+        alert("Invalid JSON for iframe message");
+      }
+    }
+
+    function sendToWindow() {
+      if (childWindow && !childWindow.closed) {
+        try {
+          const msg = JSON.parse(document.getElementById("msgToWindow").value);
+          childWindow.postMessage(msg, "*");
+        } catch (e) {
+          alert("Invalid JSON for window message");
+        }
+      } else {
+        alert("Window not opened or already closed");
+      }
+    }
+
+    function clearLog() {
+      document.getElementById("logContainer").innerHTML = "";
+    }
+
+    window.addEventListener("message", (e) => {
+      const container = document.getElementById("logContainer");
+
+      const fullMessage = JSON.stringify(e.data, null, 2);
+      const previewMessage = fullMessage.length > 1000
+        ? fullMessage.slice(0, 1000) + "\n...\n[click to expand]"
+        : fullMessage;
+
+      const entry = document.createElement("div");
+      entry.className = "log-entry border border-green-700 bg-green-950 rounded p-2 hover:bg-green-900 cursor-pointer";
+      entry.innerHTML = `
+        <div><span class='text-white font-bold'>From:</span> ${e.origin}</div>
+        <div class="details mt-2 text-green-200">${previewMessage}</div>
+      `;
+
+      entry.addEventListener("click", () => {
+        const details = entry.querySelector(".details");
+        if (details.innerText.includes("[click to expand]")) {
+          details.innerText = fullMessage;
+        }
+        entry.classList.toggle("active");
+      });
+
+      container.prepend(entry);
+    });
+  </script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"version":"2024.11.0","token":"0f7fbb0a4e1647678ba6390c94094e05","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
 
+<!-- Mirrored from poc.0xrz.me/postmessage.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 19 Aug 2025 09:04:41 GMT -->
 </html>
-
-
