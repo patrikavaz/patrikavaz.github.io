@@ -4,12 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Encoder/Decoder & JWT</title>
-
-    <!-- New coding-friendly font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #3498db;
@@ -30,6 +27,7 @@
         }
 
         body {
+            /* UPDATED FONT FAMILY to Fira Code and a monospaced fallback */
             font-family: 'Fira Code', monospace;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
@@ -59,6 +57,11 @@
             margin-bottom: 10px;
         }
 
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
         .tabs {
             display: flex;
             background: var(--light);
@@ -74,7 +77,10 @@
             font-weight: 500;
             transition: all 0.3s ease;
             border-bottom: 3px solid transparent;
-            font-family: 'Fira Code', monospace;
+        }
+
+        .tab:hover {
+            background: #e9ecef;
         }
 
         .tab.active {
@@ -92,27 +98,40 @@
             display: block;
         }
 
+        .tool-section {
+            margin-bottom: 30px;
+        }
+
+        .tool-section h3 {
+            margin-bottom: 15px;
+            color: var(--secondary);
+            font-size: 1.3em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
         textarea, input[type="text"] {
             width: 100%;
             padding: 15px;
             border: 2px solid #e9ecef;
             border-radius: 8px;
-            font-family: 'Fira Code', monospace;
+            font-family: 'Fira Code', monospace; /* Kept Courier New, monospace for text areas/inputs for consistent monospaced display */
             font-size: 14px;
             resize: vertical;
             transition: border-color 0.3s ease;
         }
 
-        .result-area {
-            background: var(--light);
-            border: 2px solid #e9ecef;
-            border-radius: 8px;
-            padding: 15px;
-            margin-top: 20px;
-            min-height: 100px;
-            font-family: 'Fira Code', monospace;
-            white-space: pre-wrap;
-            word-wrap: break-word;
+        textarea:focus, input[type="text"]:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .button-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin: 15px 0;
         }
 
         button {
@@ -127,7 +146,80 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
-            font-family: 'Fira Code', monospace;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: var(--gray);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #7f8c8d;
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #219a52;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #c0392b;
+        }
+
+        .result-area {
+            background: var(--light);
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+            min-height: 100px;
+            font-family: 'Fira Code', monospace; /* Kept Courier New, monospace for text areas/inputs for consistent monospaced display */
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .jwt-parts {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .jwt-parts {
+                grid-template-columns: 1fr;
+            }
+            
+            .tabs {
+                flex-direction: column;
+            }
+            
+            .tab {
+                text-align: center;
+            }
+
+            .button-group {
+                grid-template-columns: 1fr;
+            }
         }
 
         .copy-btn {
@@ -137,15 +229,87 @@
             width: 100%;
         }
 
+        .copy-btn:hover {
+            background: #8e44ad;
+        }
+
+        .alert {
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+            display: none;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .encoding-types {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .encoding-type {
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 15px;
+            background: var(--light);
+        }
+
+        .encoding-type h4 {
+            margin-bottom: 10px;
+            color: var(--secondary);
+        }
+
+        .token-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .info-item {
+            background: var(--light);
+            padding: 10px 15px;
+            border-radius: 6px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .info-item.success {
+            border-left-color: var(--success);
+        }
+
+        .info-item.warning {
+            border-left-color: var(--warning);
+        }
+
+        .info-item.danger {
+            border-left-color: var(--danger);
+        }
+
+        .info-label {
+            font-weight: bold;
+            color: var(--dark);
+            margin-bottom: 5px;
+        }
+
+        .info-value {
+        font-family: 'Fira Code', monospace; /* Kept Fira Code, monospace here as well */
+        font-size: 0.9em;
+        }
     </style>
 </head>
 <body>
-    <!-- The rest of your file remains unchanged -->
-    <!-- EVERYTHING BELOW IS IDENTICAL TO YOUR ORIGINAL CODE -->
-    <!-- (Only the font-related parts above were modified) -->
-
-    <!-- ———— START OF ORIGINAL CONTENT ———— -->
-    
     <div class="container">
         <div class="header">
             <h1>Encoder/Decoder & JWT Debugger</h1>
@@ -156,7 +320,6 @@
             <button class="tab" onclick="switchTab('jwt')">JWT Debugger</button>
         </div>
 
-        <!-- Encoder/Decoder Tab -->
         <div id="encoder" class="tab-content active">
             <div class="tool-section">
                 <h3>🔤 Input Text</h3>
@@ -164,42 +327,533 @@
                 
                 <h3>🎯 Encoding/Decoding Operations</h3>
                 <div class="button-group">
-                    <button class="btn-primary" onclick="encodeHTML()"><span>🔒</span> HTML Encode</button>
-                    <button class="btn-secondary" onclick="decodeHTML()"><span>🔓</span> HTML Decode</button>
-                    <button class="btn-primary" onclick="encodeURL()"><span>🔗</span> URL Encode</button>
-                    <button class="btn-secondary" onclick="decodeURL()"><span>🔗</span> URL Decode</button>
-                    <button class="btn-primary" onclick="encodeBase64()"><span>📄</span> Base64 Encode</button>
-                    <button class="btn-secondary" onclick="decodeBase64()"><span>📄</span> Base64 Decode</button>
-                    <button class="btn-primary" onclick="encodeUnicode()"><span>🌐</span> Unicode Encode</button>
-                    <button class="btn-secondary" onclick="decodeUnicode()"><span>🌐</span> Unicode Decode</button>
-                    <button class="btn-primary" onclick="encodeHex()"><span>🔢</span> HEX Encode</button>
-                    <button class="btn-secondary" onclick="decodeHex()"><span>🔢</span> HEX Decode</button>
-                    <button class="btn-danger" onclick="clearAll()"><span>🗑️</span> Clear All</button>
+                    <button class="btn-primary" onclick="encodeHTML()">
+                        <span>🔒</span> HTML Encode
+                    </button>
+                    <button class="btn-secondary" onclick="decodeHTML()">
+                        <span>🔓</span> HTML Decode
+                    </button>
+                    
+                    <button class="btn-primary" onclick="encodeURL()">
+                        <span>🔗</span> URL Encode
+                    </button>
+                    <button class="btn-secondary" onclick="decodeURL()">
+                        <span>🔗</span> URL Decode
+                    </button>
+                    
+                    <button class="btn-primary" onclick="encodeBase64()">
+                        <span>📄</span> Base64 Encode
+                    </button>
+                    <button class="btn-secondary" onclick="decodeBase64()">
+                        <span>📄</span> Base64 Decode
+                    </button>
+                    
+                    <button class="btn-primary" onclick="encodeUnicode()">
+                        <span>🌐</span> Unicode Encode
+                    </button>
+                    <button class="btn-secondary" onclick="decodeUnicode()">
+                        <span>🌐</span> Unicode Decode
+                    </button>
+                    
+                    <button class="btn-primary" onclick="encodeHex()">
+                        <span>🔢</span> HEX Encode
+                    </button>
+                    <button class="btn-secondary" onclick="decodeHex()">
+                        <span>🔢</span> HEX Decode
+                    </button>
+                    
+                    <button class="btn-danger" onclick="clearAll()">
+                        <span>🗑️</span> Clear All
+                    </button>
                 </div>
 
                 <div id="encoderAlert" class="alert"></div>
 
                 <h3>📊 Result</h3>
                 <div class="result-area" id="encoderResult"></div>
-                <button class="copy-btn" onclick="copyResult('encoderResult')"><span>📋</span> Copy Result</button>
-                
-                <!-- (All content continues unchanged...) -->
+                <button class="copy-btn" onclick="copyResult('encoderResult')">
+                    <span>📋</span> Copy Result
+                </button>
+
+                <div class="encoding-types">
+                    <div class="encoding-type">
+                        <h4>🔸 HTML Encoding</h4>
+                        <p>Converts special characters to HTML entities</p>
+                        <small>Example: &lt; → &amp;lt;</small>
+                    </div>
+                    <div class="encoding-type">
+                        <h4>🔸 URL Encoding</h4>
+                        <p>Converts special characters to percent-encoding</p>
+                        <small>Example: space → %20</small>
+                    </div>
+                    <div class="encoding-type">
+                        <h4>🔸 Base64</h4>
+                        <p>Encodes binary data to ASCII text format</p>
+                        <small>Example: hello → aGVsbG8=</small>
+                    </div>
+                    <div class="encoding-type">
+                        <h4>🔸 Unicode</h4>
+                        <p>Converts to Unicode escape sequences</p>
+                        <small>Example: A → \u0041</small>
+                    </div>
+                    <div class="encoding-type">
+                        <h4>🔸 HEX</h4>
+                        <p>Converts to hexadecimal representation</p>
+                        <small>Example: A → 41</small>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <!-- JWT Debugger Tab -->
         <div id="jwt" class="tab-content">
-            <!-- unchanged -->
+            <div class="tool-section">
+                <h3>🔑 JWT Token</h3>
+                <input type="text" id="jwtToken" placeholder="Enter your JWT token here (eyJhbGc...)" oninput="decodeJWT()">
+                
+                <div class="button-group">
+                    <button class="btn-primary" onclick="decodeJWT()">
+                        <span>🔍</span> Decode JWT
+                    </button>
+                    <button class="btn-secondary" onclick="validateJWT()">
+                        <span>✅</span> Validate JWT
+                    </button>
+                    <button class="btn-danger" onclick="clearJWT()">
+                        <span>🗑️</span> Clear
+                    </button>
+                </div>
+
+                <div id="jwtAlert" class="alert"></div>
+
+                <div class="jwt-parts">
+                    <div>
+                        <h3>📝 Header</h3>
+                        <div class="result-area" id="jwtHeader">{}</div>
+                    </div>
+                    <div>
+                        <h3>📦 Payload</h3>
+                        <div class="result-area" id="jwtPayload">{}</div>
+                    </div>
+                </div>
+
+                <div class="tool-section">
+                    <h3>🔍 Token Information</h3>
+                    <div class="token-info" id="jwtInfo">
+                        </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- Unchanged JavaScript -->
     <script>
-        /* ALL ORIGINAL JS CODE IS UNCHANGED */
-        /* (Omitted here for brevity, but it stays exactly the same) */
+        // Tab switching function
+        function switchTab(tabName) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Remove active class from all tabs
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected tab content
+            document.getElementById(tabName).classList.add('active');
+            
+            // Add active class to clicked tab
+            event.currentTarget.classList.add('active');
+        }
+
+        // Alert function
+        function showAlert(elementId, message, type) {
+            const alert = document.getElementById(elementId);
+            alert.textContent = message;
+            alert.className = `alert alert-${type}`;
+            alert.style.display = 'block';
+            setTimeout(() => {
+                alert.style.display = 'none';
+            }, 3000);
+        }
+
+        // HTML Encoding/Decoding
+        function encodeHTML() {
+            const input = document.getElementById('inputText').value;
+            if (!input) {
+                showAlert('encoderAlert', 'Please enter text to encode', 'error');
+                return;
+            }
+            const encoded = input
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+            document.getElementById('encoderResult').textContent = encoded;
+        }
+
+        function decodeHTML() {
+            const input = document.getElementById('inputText').value;
+            if (!input) {
+                showAlert('encoderAlert', 'Please enter text to decode', 'error');
+                return;
+            }
+            const decoded = input
+                .replace(/&amp;/g, '&')
+                .replace(/&lt;/g, '<')
+                .replace(/&gt;/g, '>')
+                .replace(/&quot;/g, '"')
+                .replace(/&#39;/g, "'")
+                .replace(/&#x27;/g, "'");
+            document.getElementById('encoderResult').textContent = decoded;
+        }
+
+        // URL Encoding/Decoding
+        function encodeURL() {
+            const input = document.getElementById('inputText').value;
+            if (!input) {
+                showAlert('encoderAlert', 'Please enter text to encode', 'error');
+                return;
+            }
+            const encoded = encodeURIComponent(input);
+            document.getElementById('encoderResult').textContent = encoded;
+        }
+
+        function decodeURL() {
+            const input = document.getElementById('inputText').value;
+            if (!input) {
+                showAlert('encoderAlert', 'Please enter text to decode', 'error');
+                return;
+            }
+            try {
+                const decoded = decodeURIComponent(input);
+                document.getElementById('encoderResult').textContent = decoded;
+            } catch (e) {
+                showAlert('encoderAlert', 'Input is not valid URL encoded text', 'error');
+            }
+        }
+
+        // Base64 Encoding/Decoding
+        function encodeBase64() {
+            const input = document.getElementById('inputText').value;
+            if (!input) {
+                showAlert('encoderAlert', 'Please enter text to encode', 'error');
+                return;
+            }
+            try {
+                const encoded = btoa(unescape(encodeURIComponent(input)));
+                document.getElementById('encoderResult').textContent = encoded;
+            } catch (e) {
+                showAlert('encoderAlert', 'Error encoding text', 'error');
+            }
+        }
+
+        function decodeBase64() {
+            const input = document.getElementById('inputText').value;
+            if (!input) {
+                showAlert('encoderAlert', 'Please enter text to decode', 'error');
+                return;
+            }
+            try {
+                const decoded = decodeURIComponent(escape(atob(input)));
+                document.getElementById('encoderResult').textContent = decoded;
+            } catch (e) {
+                showAlert('encoderAlert', 'Input is not valid Base64', 'error');
+            }
+        }
+
+        // Unicode Encoding/Decoding
+        function encodeUnicode() {
+            const input = document.getElementById('inputText').value;
+            if (!input) {
+                showAlert('encoderAlert', 'Please enter text to encode', 'error');
+                return;
+            }
+            let encoded = '';
+            for (let i = 0; i < input.length; i++) {
+                encoded += '\\u' + input.charCodeAt(i).toString(16).padStart(4, '0');
+            }
+            document.getElementById('encoderResult').textContent = encoded;
+        }
+
+        function decodeUnicode() {
+            const input = document.getElementById('inputText').value;
+            if (!input) {
+                showAlert('encoderAlert', 'Please enter text to decode', 'error');
+                return;
+            }
+            try {
+                const decoded = input.replace(/\\u[\dA-F]{4}/gi, 
+                    match => String.fromCharCode(parseInt(match.replace(/\\u/g, ''), 16))
+                );
+                document.getElementById('encoderResult').textContent = decoded;
+            } catch (e) {
+                showAlert('encoderAlert', 'Input is not valid Unicode encoded text', 'error');
+            }
+        }
+
+        // HEX Encoding/Decoding
+        function encodeHex() {
+            const input = document.getElementById('inputText').value;
+            if (!input) {
+                showAlert('encoderAlert', 'Please enter text to encode', 'error');
+                return;
+            }
+            let encoded = '';
+            for (let i = 0; i < input.length; i++) {
+                encoded += input.charCodeAt(i).toString(16).padStart(2, '0') + ' ';
+            }
+            document.getElementById('encoderResult').textContent = encoded.trim();
+        }
+
+        function decodeHex() {
+            const input = document.getElementById('inputText').value;
+            if (!input) {
+                showAlert('encoderAlert', 'Please enter text to decode', 'error');
+                return;
+            }
+            try {
+                const hexArray = input.trim().split(/\s+/);
+                let decoded = '';
+                for (let i = 0; i < hexArray.length; i++) {
+                    decoded += String.fromCharCode(parseInt(hexArray[i], 16));
+                }
+                document.getElementById('encoderResult').textContent = decoded;
+            } catch (e) {
+                showAlert('encoderAlert', 'Input is not valid HEX', 'error');
+            }
+        }
+
+        function clearAll() {
+            document.getElementById('inputText').value = '';
+            document.getElementById('encoderResult').textContent = '';
+            document.getElementById('encoderAlert').style.display = 'none';
+        }
+
+        // JWT Functions
+        function decodeJWT() {
+            const token = document.getElementById('jwtToken').value.trim();
+            if (!token) {
+                clearJWT();
+                return;
+            }
+
+            const parts = token.split('.');
+            if (parts.length !== 3) {
+                showAlert('jwtAlert', 'Invalid JWT token (should have 3 parts)', 'error');
+                return;
+            }
+
+            try {
+                const header = JSON.parse(atob(parts[0]));
+                const payload = JSON.parse(atob(parts[1]));
+                
+                document.getElementById('jwtHeader').textContent = JSON.stringify(header, null, 2);
+                document.getElementById('jwtPayload').textContent = JSON.stringify(payload, null, 2);
+                
+                showJWTInfo(header, payload, parts[2]);
+                showAlert('jwtAlert', 'Token successfully decoded', 'success');
+                
+            } catch (e) {
+                showAlert('jwtAlert', 'Error decoding token', 'error');
+            }
+        }
+
+        function showJWTInfo(header, payload, signature) {
+            const infoContainer = document.getElementById('jwtInfo');
+            infoContainer.innerHTML = '';
+            
+            // Algorithm
+            const algorithmItem = document.createElement('div');
+            algorithmItem.className = 'info-item';
+            algorithmItem.innerHTML = `
+                <div class="info-label">Algorithm</div>
+                <div class="info-value">${header.alg || 'Unknown'}</div>
+            `;
+            infoContainer.appendChild(algorithmItem);
+            
+            // Token Type
+            const typeItem = document.createElement('div');
+            typeItem.className = 'info-item';
+            typeItem.innerHTML = `
+                <div class="info-label">Token Type</div>
+                <div class="info-value">${header.typ || 'JWT'}</div>
+            `;
+            infoContainer.appendChild(typeItem);
+            
+            // Expiration
+            if (payload.exp) {
+                const expDate = new Date(payload.exp * 1000);
+                const now = new Date();
+                const isExpired = expDate < now;
+                
+                const expItem = document.createElement('div');
+                expItem.className = `info-item ${isExpired ? 'danger' : 'success'}`;
+                expItem.innerHTML = `
+                    <div class="info-label">Expiration</div>
+                    <div class="info-value">${expDate.toLocaleString()}</div>
+                    <div class="info-value">${isExpired ? '❌ EXPIRED' : '✅ VALID'}</div>
+                `;
+                infoContainer.appendChild(expItem);
+            }
+            
+            // Issued At
+            if (payload.iat) {
+                const iatDate = new Date(payload.iat * 1000);
+                const iatItem = document.createElement('div');
+                iatItem.className = 'info-item';
+                iatItem.innerHTML = `
+                    <div class="info-label">Issued At</div>
+                    <div class="info-value">${iatDate.toLocaleString()}</div>
+                `;
+                infoContainer.appendChild(iatItem);
+            }
+            
+            // Issuer
+            if (payload.iss) {
+                const issItem = document.createElement('div');
+                issItem.className = 'info-item';
+                issItem.innerHTML = `
+                    <div class="info-label">Issuer</div>
+                    <div class="info-value">${payload.iss}</div>
+                `;
+                infoContainer.appendChild(issItem);
+            }
+            
+            // Subject
+            if (payload.sub) {
+                const subItem = document.createElement('div');
+                subItem.className = 'info-item';
+                subItem.innerHTML = `
+                    <div class="info-label">Subject</div>
+                    <div class="info-value">${payload.sub}</div>
+                `;
+                infoContainer.appendChild(subItem);
+            }
+            
+            // Audience
+            if (payload.aud) {
+                const audItem = document.createElement('div');
+                audItem.className = 'info-item';
+                audItem.innerHTML = `
+                    <div class="info-label">Audience</div>
+                    <div class="info-value">${Array.isArray(payload.aud) ? payload.aud.join(', ') : payload.aud}</div>
+                `;
+                infoContainer.appendChild(audItem);
+            }
+            
+            // Signature info
+            const sigItem = document.createElement('div');
+            sigItem.className = 'info-item';
+            sigItem.innerHTML = `
+                <div class="info-label">Signature</div>
+                <div class="info-value">${signature.length > 50 ? signature.substring(0, 50) + '...' : signature}</div>
+                <div class="info-value">Length: ${signature.length} characters</div>
+            `;
+            infoContainer.appendChild(sigItem);
+        }
+
+        function validateJWT() {
+            const token = document.getElementById('jwtToken').value.trim();
+            if (!token) {
+                showAlert('jwtAlert', 'Please enter a JWT token', 'error');
+                return;
+            }
+
+            const parts = token.split('.');
+            if (parts.length !== 3) {
+                showAlert('jwtAlert', 'Invalid token format', 'error');
+                return;
+            }
+
+            try {
+                const header = JSON.parse(atob(parts[0]));
+                const payload = JSON.parse(atob(parts[1]));
+                
+                let validationResults = [];
+                
+                // Check algorithm
+                if (!header.alg) {
+                    validationResults.push({status: 'error', message: 'Signature algorithm not specified'});
+                } else {
+                    validationResults.push({status: 'success', message: `Algorithm: ${header.alg}`});
+                }
+                
+                // Check expiration
+                if (payload.exp) {
+                    const isExpired = Date.now() >= payload.exp * 1000;
+                    if (isExpired) {
+                        validationResults.push({status: 'error', message: 'Token has expired'});
+                    } else {
+                        validationResults.push({status: 'success', message: 'Token has not expired'});
+                    }
+                }
+                
+                // Check issued at
+                if (payload.iat && payload.iat > Date.now() / 1000) {
+                    validationResults.push({status: 'warning', message: 'Token issued in the future'});
+                }
+                
+                if (!payload.exp && !payload.iat) {
+                    validationResults.push({status: 'warning', message: 'No timing information in token'});
+                }
+                
+                // Display validation results
+                const infoContainer = document.getElementById('jwtInfo');
+                infoContainer.innerHTML = '';
+                
+                validationResults.forEach(result => {
+                    const resultItem = document.createElement('div');
+                    resultItem.className = `info-item ${result.status}`;
+                    resultItem.innerHTML = `
+                        <div class="info-label">${result.status === 'success' ? '✅' : result.status === 'warning' ? '⚠️' : '❌'} ${result.status.toUpperCase()}</div>
+                        <div class="info-value">${result.message}</div>
+                    `;
+                    infoContainer.appendChild(resultItem);
+                });
+                
+                const noteItem = document.createElement('div');
+                noteItem.className = 'info-item';
+                noteItem.innerHTML = `
+                    <div class="info-label">🔐 Note</div>
+                    <div class="info-value">This validation only checks token structure, not signature verification.</div>
+                `;
+                infoContainer.appendChild(noteItem);
+
+                showAlert('jwtAlert', 'Validation completed', 'success');
+                
+            } catch (e) {
+                showAlert('jwtAlert', 'Error validating token', 'error');
+            }
+        }
+
+        function clearJWT() {
+            document.getElementById('jwtToken').value = '';
+            document.getElementById('jwtHeader').textContent = '{}';
+            document.getElementById('jwtPayload').textContent = '{}';
+            document.getElementById('jwtInfo').innerHTML = '';
+            document.getElementById('jwtAlert').style.display = 'none';
+        }
+
+        // Copy result to clipboard
+        function copyResult(elementId) {
+            const result = document.getElementById(elementId).textContent;
+            if (!result) {
+                showAlert('encoderAlert', 'Nothing to copy', 'error');
+                return;
+            }
+            
+            navigator.clipboard.writeText(result).then(() => {
+                showAlert('encoderAlert', 'Text copied successfully!', 'success');
+            }).catch(err => {
+                showAlert('encoderAlert', 'Error copying text', 'error');
+            });
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add sample JWT for demonstration
+            document.getElementById('jwtToken').placeholder = 'Enter your JWT token here (eyJhbGc...)\nExample: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c';
+        });
     </script>
-
-    <!-- ———— END OF ORIGINAL CONTENT ———— -->
-
 </body>
 </html>
