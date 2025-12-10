@@ -18,7 +18,6 @@ const commands = {
        - Burp Suite
        - SQLMap
        - Nmap
-       - Metasploit
        - Wireshark
        - Postman
        - Custom automation scripts (Python/Bash)
@@ -36,10 +35,11 @@ const commands = {
     5. Continuous Learning:
        - Active participation in CTFs, security research, and staying updated with emerging threats.`,
   education: `- At university I am studying at university . . No no I am unable to write this for security reasons`,
-  contact: `Instagram ID: 0x65null
-    Telegram ID: https://t.me/isRoot_u
-    Voorivex academy: https://voorivex.academy/profile/patrik
-    Email: info@hearian.ir`,
+  contact: `Social Media:
+    - Instagram ID: 0x65null
+    - Telegram ID: isRoot_u
+    - Twitter ID: Mroff_ir
+    - Email: info@hearian.ir`,
   clear: `clear`,
 };
 
@@ -71,7 +71,7 @@ function typeResponse(text) {
     } else {
       clearInterval(typingInterval);
     }
-  }, 15);
+  }, 10);
 }
 
 function clearTerminal() {
