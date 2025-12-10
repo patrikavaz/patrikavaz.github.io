@@ -2,210 +2,26 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SYSTEM ACCESS</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mr.Avaz</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Domine&display=swap" rel="stylesheet">
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-        
-        body {
-            background-color: #000;
-            color: #0f0;
-            font-family: 'Courier New', monospace;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 20px;
-            overflow-x: hidden;
-            position: relative;
-            line-height: 1.5;
-        }
-        
-        .noise {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABGSURBVGhD7cExAQAwDMCg+zfd2VAp5FEJkCRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiTpB+9/3QYV2T9xAAAAAElFTkSuQmCC');
-            opacity: 0.03;
-            pointer-events: none;
-            z-index: 100;
-        }
-        
-        .container {
-            text-align: center;
-            padding: 1.5rem;
-            border: 1px solid #0f0;
-            width: 100%;
-            max-width: 100%;
-            box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
-            position: relative;
-            overflow: hidden;
-            margin: 0 auto;
-        }
-        
-        @media (max-width: 768px) {
-            .container {
-                padding: 1rem;
-                margin: 0 10px;
-            }
-            
-            h1 {
-                font-size: 1.2rem;
-                margin-bottom: 1rem;
-            }
-            
-            .status-line {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                margin: 1.5rem 0;
-            }
-            
-            .prompt {
-                margin-right: 8px;
-                align-self: flex-start;
-                line-height: 1.2;
-            }
-            
-            .status-text {
-                font-size: 1rem;
-                text-align: left;
-                white-space: nowrap;
-                line-height: 1.2;
-            }
-            
-            .social-links {
-                flex-direction: column;
-                gap: 0.8rem;
-            }
-            
-            .social-link {
-                padding: 0.4rem 0;
-                width: 100%;
-            }
-        }
-        
-        h1 {
-            color: #0f0;
-            margin-bottom: 1.5rem;
-            font-size: 1.3rem;
-            text-shadow: 0 0 5px #0f0;
-            word-wrap: break-word;
-        }
-        
-        .status-line {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 1.5rem 0;
-        }
-        
-        .prompt {
-            margin-right: 8px;
-            color: #0f0;
-            font-size: 1.1rem;
-            line-height: 1.2;
-        }
-        
-        .status-text {
-            color: #0f0;
-            font-size: 1.1rem;
-            text-shadow: 0 0 3px #0f0;
-            text-align: left;
-            line-height: 1.2;
-        }
-        
-        .social-links {
-            display: flex;
-            justify-content: center;
-            gap: 0.8rem;
-            margin-top: 1.5rem;
-            flex-wrap: wrap;
-        }
-        
-        .social-link {
-            color: #0a0;
-            text-decoration: none;
-            border: 1px solid #0a0;
-            padding: 0.5rem 0.8rem;
-            transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
-            font-size: 0.9rem;
-            white-space: nowrap;
-        }
-        
-        .social-link:hover {
-            color: #0f0;
-            border-color: #0f0;
-            box-shadow: 0 0 10px #0f0;
-        }
-        
-        .cursor {
-            animation: blink 1s infinite;
-        }
-        
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
-        }
-        
-        .typing {
-            display: inline-block;
-            overflow: hidden;
-            white-space: nowrap;
-            text-align: left;
+        body, .terminal, #output, #input, .prompt {
+            font-family: 'Domine', 'Courier New', monospace !important;
         }
     </style>
 </head>
 <body>
-    <div class="noise"></div>
-    <div class="container">
-<!--         <h1>NOT</h1>
-         -->
-        <div class="status-line">
-            <span class="prompt">></span>
-            <span class="status-text">
-                <span class="typing"></span><span class="cursor">|</span>
-            </span>
+    <div class="terminal">
+        <div id="output">
+            <p>Welcome to My System! Type 'help' to see available commands.</p>
         </div>
-        
-        <div class="social-links">
-            <a href="https://t.me/isRoot_u" class="social-link">[ TELEGRAM ]</a>
+        <div class="input-line">
+            <span class="prompt">user@System:~$</span>
+            <input type="text" id="input" autofocus>
         </div>
     </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const typingElement = document.querySelector('.typing');
-            const text = 'Hello world! :)';
-            let i = 0;
-            
-            function typeWriter() {
-                if (i < text.length) {
-                    typingElement.textContent += text.charAt(i);
-                    i++;
-                    setTimeout(typeWriter, 100);
-                }
-            }
-            
-            setTimeout(typeWriter, 500);
-            
-            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-            
-            if (!isMobile) {
-                setInterval(() => {
-                    document.querySelector('.container').style.transform = `translate(${Math.random() * 2 - 1}px, ${Math.random() * 2 - 1}px)`;
-                }, 3000);
-            }
-        });
-    </script>
+    <script src="js/script.js"></script>
 </body>
 </html>
