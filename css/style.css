@@ -2,7 +2,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Courier New', monospace;
+    font-family: 'Fira Code', 'Courier New', monospace;
 }
 
 body {
@@ -14,6 +14,8 @@ body {
     padding: 20px;
     color: #00ff00;
     overflow-x: hidden;
+    font-size: 16px;
+    line-height: 1.5;
 }
 
 .terminal {
@@ -37,7 +39,17 @@ body {
     left: 0;
     right: 0;
     height: 28px;
-    background: linear-gradient(to bottom, #333 0%, #222 100%);
+    background:
+        repeating-linear-gradient(
+            0deg,
+            rgba(0, 30, 0, 0.1) 0px,
+            rgba(0, 30, 0, 0.1) 1px,
+            transparent 1px,
+            transparent 2px
+        );
+    box-shadow: 
+        0 0 15px rgba(0, 255, 0, 0.3),
+        inset 0 0 20px rgba(0, 255, 0, 0.1);
     border-bottom: 1px solid #00aa00;
     display: flex;
     align-items: center;
@@ -69,7 +81,22 @@ body {
     word-wrap: break-word;
     text-shadow: 0 0 8px rgba(0, 255, 0, 0.4);
     animation: fadeIn 0.3s ease-out;
+    color: #00ff00;
+    position: relative;
 }
+
+#output p:empty::before {
+    content: ' ';
+    display: inline-block;
+    width: 8px;
+    height: 16px;
+    background-color: #00ff00;
+    vertical-align: middle;
+    margin-right: 5px;
+    animation: blink 1s infinite;
+}
+
+/* Removed invalid :contains selector */
 
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(5px); }
@@ -96,6 +123,21 @@ body {
     background-color: rgba(0, 20, 0, 0.3);
     border-top: 1px solid #008800;
     position: relative;
+}
+
+.input-line::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, 
+        transparent 0%, 
+        #00ff00 20%, 
+        #00ff00 80%, 
+        transparent 100%);
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
 }
 
 .prompt {
@@ -135,54 +177,6 @@ body {
     opacity: 0.7;
 }
 
-.terminal::before {
-    background: repeating-linear-gradient(
-        0deg,
-        rgba(0, 30, 0, 0.1) 0px,
-        rgba(0, 30, 0, 0.1) 1px,
-        transparent 1px,
-        transparent 2px
-    );
-}
-
-.terminal {
-    position: relative;
-}
-
-.terminal::before {
-    box-shadow: 
-        0 0 15px rgba(0, 255, 0, 0.3),
-        inset 0 0 20px rgba(0, 255, 0, 0.1);
-}
-
-body {
-    font-size: 16px;
-    line-height: 1.5;
-}
-
-#output p {
-    color: #00ff00;
-}
-
-#output p:contains(":") {
-    color: #00ff00;
-}
-
-.input-line::before {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, 
-        transparent 0%, 
-        #00ff00 20%, 
-        #00ff00 80%, 
-        transparent 100%);
-    box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
-}
-
 @media (max-width: 768px) {
     .terminal {
         border-radius: 0;
@@ -202,19 +196,4 @@ body {
     body {
         padding: 10px;
     }
-}
-
-#output p {
-    position: relative;
-}
-
-#output p:empty::before {
-    content: ' ';
-    display: inline-block;
-    width: 8px;
-    height: 16px;
-    background-color: #00ff00;
-    vertical-align: middle;
-    margin-right: 5px;
-    animation: blink 1s infinite;
 }
