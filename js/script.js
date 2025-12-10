@@ -8,7 +8,8 @@ const commands = {
     - education: Display my educational background.
     - contact: Get my contact information.
     - clear: Clear the terminal.`,
-  about: `Full-Time Ethical Hacker & Bug Bounty Hunter | Uncovering critical vulnerabilities to strengthen digital defenses Proficient in Web/API/Mobile security`,
+  about: `about me:
+    - Full-Time Ethical Hacker & Bug Bounty Hunter | Uncovering critical vulnerabilities to strengthen digital defenses Proficient in Web/API/Mobile security`,
   skills: `Core Skills:
 
     1. Vulnerability Assessment & Penetration Testing:
@@ -71,7 +72,7 @@ function typeResponse(text) {
     } else {
       clearInterval(typingInterval);
     }
-  }, 10);
+  }, 15);
 }
 
 function clearTerminal() {
