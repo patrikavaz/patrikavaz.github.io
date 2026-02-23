@@ -52,16 +52,20 @@ function handleCommand(command) {
     }
     let response = commands[command] || `Command not found: ${command}`;
     
+    // --- نمایش پاسخ با افکت تایپ ---
     typeResponse(response);
 }
 
-
+/** 
+ * تابع بهبود یافته برای تایپ کردن پاسخ‌ها
+ */
 function typeResponse(text) {
     const responseLine = document.createElement("p");
     output.appendChild(responseLine);
     let i = 0;
     const typingInterval = setInterval(() => {
         if (i < text.length) {
+            // مهم: نمایش صحیح خطوط جدید (\n)
             if (text.charAt(i) === '\n') {
                 responseLine.innerHTML += "<br>";
             } else {
@@ -70,13 +74,15 @@ function typeResponse(text) {
             i++;
         } else {
             clearInterval(typingInterval);
+            // اسکرول به پایین
             output.scrollTop = output.scrollHeight;
         }
-    }, 40); 
+    }, 40); // سرعت 40 میلی‌ثانیه (کمی کندتر و خواناتر از 15ms)
 }
 
 function clearTerminal() {
     output.innerHTML = "";
+    // پیام پاکسازی اولیه را با افکت تایپ نمایش می‌دهیم
     typeResponse('Terminal cleared. Type "help" to see available commands.');
 }
 
@@ -85,12 +91,14 @@ input.addEventListener("keydown", function (event) {
         const command = input.value.trim();
         input.value = "";
         
+        // 1. نمایش ورودی کاربر (با پرامپت)
         if (command) {
             const userCmdLine = document.createElement("p");
             userCmdLine.innerHTML = `<span class='prompt'>user@System:~$</span> ${command}`;
             output.appendChild(userCmdLine);
             handleCommand(command);
         } else {
+             // اگر خالی بود، فقط یک خط جدید اضافه می‌کنیم
              output.appendChild(document.createElement("p"));
         }
         
@@ -99,9 +107,12 @@ input.addEventListener("keydown", function (event) {
 });
 
 
+// --- بخش جدید: اجرای اولیه با افکت تایپ هنگام بارگذاری صفحه ---
 window.onload = function () {
+    // توجه: عنوان صفحه در کد شما باید به درستی تنظیم شده باشد (مثل Mr.Avaz)
+    const profileTitle = document.title.replace("Mr.Avaz", "Arian"); 
     const introText = `[INFO] Initializing Shell...
-[INFO] Loading user profile: ${document.title || 'Unknown'}
+[INFO] Loading user profile: ${profileTitle}
 Welcome to My System, Arian! Type 'help' to see available commands.`;
     
     const responseLine = document.createElement("p");
@@ -109,6 +120,7 @@ Welcome to My System, Arian! Type 'help' to see available commands.`;
     let i = 0;
     const typingInterval = setInterval(() => {
         if (i < introText.length) {
+            // مدیریت خط جدید برای نمایش صحیح
             if (introText.charAt(i) === '\n') {
                 responseLine.innerHTML += "<br>";
             } else {
@@ -117,9 +129,9 @@ Welcome to My System, Arian! Type 'help' to see available commands.`;
             i++;
         } else {
             clearInterval(typingInterval);
-            input.focus(); 
+            input.focus(); // فوکوس روی ورودی پس از اتمام تایپ اولیه
             output.scrollTop = output.scrollHeight;
         }
         output.scrollTop = output.scrollHeight;
-    }, 40); 
+    }, 40); // سرعت 40 میلی‌ثانیه برای پیام شروع
 };
