@@ -44,36 +44,27 @@ const commands = {
   clear: `clear`,
 };
 
-// --- تابع بهبود یافته برای تایپ کردن پاسخ‌ها ---
+// --- تابع تایپ پاسخ اصلاح شده برای مدیریت خطوط جدید (\n) ---
 function typeResponse(text) {
   const responseLine = document.createElement("p");
   output.appendChild(responseLine);
   let i = 0;
   const typingInterval = setInterval(() => {
     if (i < text.length) {
-      // **اصلاح موضعی برای مدیریت خط جدید**
-      if (text.charAt(i) === '\n') {
-          responseLine.innerHTML += "<br>"; // استفاده از innerHTML فقط برای <br>
+      const char = text.charAt(i);
+      if (char === '\n') {
+        // تبدیل \n به <br> برای شکست خط در HTML
+        responseLine.innerHTML += "<br>"; 
       } else {
-          responseLine.textContent += text.charAt(i); // برای سایر کاراکترها
+        // افزودن کاراکتر به صورت متنی برای حفظ رفتار اصلی
+        responseLine.textContent += char; 
       }
       i++;
+      output.scrollTop = output.scrollHeight; // اسکرول به پایین همزمان با تایپ
     } else {
       clearInterval(typingInterval);
-      output.scrollTop = output.scrollHeight; // اسکرول به پایین
     }
-  }, 15); // حفظ سرعت 15ms شما
-}
-
-function handleCommand(command) {
-  if (command === "clear") {
-    clearTerminal();
-    return;
-  }
-  let response = commands[command] || `Command not found: ${command}`;
-  
-  // اگر دستوری اجرا شد، پاسخ را با افکت تایپ نمایش می‌دهیم
-  typeResponse(response);
+  }, 15); // حفظ سرعت 15ms
 }
 
 input.addEventListener("keydown", function (event) {
@@ -81,53 +72,61 @@ input.addEventListener("keydown", function (event) {
     const command = input.value.trim();
     input.value = "";
     
-    // --- بخش جدید: نمایش خط فرمان کاربر قبل از پاسخ ---
+    // نمایش خط فرمان کاربر قبل از پاسخ
     if (command) {
         const userCmdLine = document.createElement("p");
         userCmdLine.innerHTML = `<span class='prompt'>user@System:~$</span> ${command}`;
         output.appendChild(userCmdLine);
         handleCommand(command);
     } else {
-         // اگر دستور خالی بود، فقط یک خط جدید اضافه می‌کنیم
          output.appendChild(document.createElement("p"));
     }
-    // -------------------------------------------------
     
     input.focus(); 
   }
 });
 
+function handleCommand(command) {
+  if (command === "clear") {
+    clearTerminal();
+    return;
+  }
+  let response = commands[command] || `Command not found: ${command}`;
+  // اگر پاسخ یک خط بود، آن را با افکت تایپ نمایش بده
+  if (command !== "clear") {
+      typeResponse(response);
+  }
+}
+
 function clearTerminal() {
-  output.innerHTML = ""; // پاکسازی کامل
-  // پیام پاکسازی جدید را با افکت تایپ نمایش می‌دهیم
+  output.innerHTML = ""; 
+  // نمایش پیام پاکسازی با افکت تایپ
   typeResponse('Terminal cleared. Type "help" to see available commands.');
 }
 
 // --- بخش جدید: اجرای اولیه با افکت تایپ هنگام بارگذاری صفحه ---
 window.onload = function () {
-    // با فرض اینکه title صفحه شما حاوی نام کاربر است
-    const userName = document.title.includes("Arian") ? "Arian" : "user";
+    // فرض می‌کنیم عنوان صفحه حاوی نام شماست یا از یک پیام پیش‌فرض استفاده می‌کنیم
     const introText = `[INFO] Initializing Shell...
-[INFO] Loading user profile: ${userName}
-Welcome to My System, ${userName}! Type 'help' to see available commands.`;
+[INFO] Loading user profile: Arian
+Welcome to My System, Arian! Type 'help' to see available commands.`;
     
     const responseLine = document.createElement("p");
     output.appendChild(responseLine);
     let i = 0;
     const typingInterval = setInterval(() => {
         if (i < introText.length) {
-            // مدیریت خط جدید برای نمایش صحیح
-            if (introText.charAt(i) === '\n') {
+            const char = introText.charAt(i);
+            if (char === '\n') {
                 responseLine.innerHTML += "<br>";
             } else {
-                responseLine.textContent += introText.charAt(i);
+                responseLine.textContent += char;
             }
             i++;
         } else {
             clearInterval(typingInterval);
-            input.focus(); // فوکوس روی ورودی پس از اتمام تایپ اولیه
-            output.scrollTop = output.scrollHeight;
+            input.focus(); 
         }
         output.scrollTop = output.scrollHeight;
-    }, 40); // سرعت کمی آهسته‌تر برای پیام شروع (40ms)
+    }, 40); // سرعت 40ms برای پیام شروع
 };
