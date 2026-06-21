@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ثبت درخواست خدمت | کافی‌نت آنلاین</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style-form.css">
+
+</head>
+<body>
+
+<div class="card">
+
+  <div class="topbar">
+    <div class="brand">
+      <div class="brand-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="4" width="20" height="13" rx="2"></rect>
+          <path d="M8 20h8M12 17v3"></path>
+        </svg>
+      </div>
+      <div>
+        <div class="brand-name">کافی‌نت آنلاین و خدمات غیرحضوری</div>
+        <div class="brand-sub">ساعات پاسخگویی 9 الی 20</div>
+      </div>
+    </div>
+    <div class="status-pill"><span class="status-dot"></span> همین الان آنلاین هستیم</div>
+  </div>
+
+  <h1>درخواستت رو <span>از همین‌جا</span> ثبت کن!</h1>
+  <p class="lede">شماره تماس و توضیح کارت رو وارد کن، تیم ما در کمترین زمان ممکن باهات تماس می‌گیره و کار رو کاملاً آنلاین برات انجام می‌ده.</p>
+
+  <div class="trust-row">
+    <div class="trust-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 3"></path></svg>
+      پاسخ سریع
+    </div>
+    <div class="trust-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"></path><path d="M5 10v9h14v-9"></path><line x1="3" y1="21" x2="21" y2="3"></line></svg>
+      بدون مراجعه حضوری
+    </div>
+    <div class="trust-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6l8-4z"></path></svg>
+      اطلاعات محرمانه
+    </div>
+  </div>
+
+  <form id="requestForm">
+
+    <!-- Honeypot field — bots fill this, real users never see it -->
+    <input type="text" name="botcheck" class="hp" tabindex="-1" autocomplete="off">
+
+    <div class="row-2">
+      <div class="field">
+        <label for="name">نام و نام خانوادگی <b>*</b></label>
+        <input type="text" id="name" name="name" placeholder="مثلاً علی محمدی" required>
+      </div>
+      <div class="field">
+        <label for="phone">شماره تماس <b>*</b></label>
+        <input type="tel" id="phone" name="phone" placeholder="09xxxxxxxxx" pattern="0[0-9]{10}" maxlength="11" required>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="service">نوع خدمت مورد نیاز <b>*</b></label>
+      <select id="service" name="service" required>
+        <option value="" disabled selected>یک خدمت رو انتخاب کن</option>
+        <option>گواهی عدم سوء پیشینه</option>
+        <option>ثبت‌نام دانشگاه</option>
+        <option>سهام عدالت</option>
+        <option>ثبت‌نام وام</option>
+        <option>استعلام خلافی</option>
+        <option>دریافت ابلاغیه</option>
+        <option>پرداخت قبوض</option>
+        <option>ثبت‌نام آزمون استخدامی</option>
+        <option>سایر خدمات</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="message">شرح درخواست <b>*</b></label>
+      <textarea id="message" name="message" placeholder="کارت رو با جزئیات توضیح بده تا سریع‌تر بهت کمک کنیم..." required></textarea>
+      <div class="hint">هرچی دقیق‌تر توضیح بدی، سریع‌تر هماهنگ می‌شیم.</div>
+    </div>
+
+    <div class="ticket">
+      <span class="ticket-label">شماره پیگیری درخواست شما</span>
+      <span class="ticket-id" id="ticketId">#KF-00000</span>
+    </div>
+
+    <div id="statusMsg" class="status-msg"></div>
+
+    <button type="submit" id="submitBtn">
+      <span id="btnLabel">ثبت سفارش رایگان</span>
+      <svg id="btnIcon" viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="11 18 5 12 11 6"></polyline></svg>
+    </button>
+
+  </form>
+</div>
+
+<script src="js/script-form.js"></script>
+
+</body>
+</html>
