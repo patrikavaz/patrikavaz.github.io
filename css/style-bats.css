@@ -21,6 +21,10 @@ body {
   justify-content: center;
 }
 
+.text {
+  text-align: center;
+}
+
 /* Bat */
 .bat {
   width: 1px;
