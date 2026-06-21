@@ -1,0 +1,424 @@
+const { useState, useEffect } = React;
+
+    // Data arrays (identical to original)
+    const services = [
+      { icon: "📋", label: "ثبت‌نام آزمون\nاستخدامی" },
+      { icon: "⚡", label: "پرداخت\nقبوض" },
+      { icon: "📜", label: "دریافت\nابلاغیه" },
+      { icon: "🚗", label: "استعلام\nخلافی" },
+      { icon: "🏦", label: "ثبت‌نام\nوام" },
+      { icon: "📊", label: "سهام\nعدالت" },
+      { icon: "🎓", label: "ثبت‌نام\nدانشگاه" },
+      { icon: "🪪", label: "گواهی عدم\nسوءپیشینه" },
+    ];
+
+    const features = [
+      { icon: "🕐", text: "۲۴ ساعته، ۷ روز هفته" },
+      { icon: "🏠", text: "بدون نیاز به مراجعه حضوری" },
+      { icon: "⚡", text: "انجام سریع سفارش" },
+      { icon: "🔒", text: "امنیت و محرمانه بودن اطلاعات" },
+    ];
+
+
+    function CafeBanner() {
+      const [pulse, setPulse] = useState(false);   // pulse state kept (original logic)
+      const [visibleCards, setVisibleCards] = useState([]);
+
+      // Pulse animation interval (original)
+      useEffect(() => {
+        const interval = setInterval(() => {
+          setPulse((p) => !p);
+        }, 1500);
+        return () => clearInterval(interval);
+      }, []);
+
+      // Animate cards appearance sequentially (original)
+      useEffect(() => {
+        services.forEach((_, i) => {
+          setTimeout(() => {
+            setVisibleCards((prev) => [...prev, i]);
+          }, 100 * i);
+        });
+      }, []);
+
+      // ---------- using React.createElement ----------
+      return React.createElement(
+        "div",
+        {
+          dir: "rtl",
+          style: {
+            fontFamily: "'Vazirmatn', 'Tahoma', sans-serif",
+            minHeight: "100vh",
+            background: "#0C1B33",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "24px",
+          },
+        },
+        React.createElement(
+          "style",
+          null,
+          `
+            .service-card {
+              background: rgba(255,255,255,0.06);
+              border: 1px solid rgba(255,255,255,0.10);
+              border-radius: 14px;
+              padding: 14px 10px;
+              text-align: center;
+              backdrop-filter: blur(6px);
+              transition: all 0.3s ease;
+              cursor: pointer;
+              opacity: 0;
+              transform: translateY(16px);
+            }
+            .service-card.visible {
+              opacity: 1;
+              transform: translateY(0);
+            }
+            .service-card:hover {
+              background: rgba(240, 180, 41, 0.15);
+              border-color: rgba(240, 180, 41, 0.5);
+              transform: translateY(-4px);
+            }
+            .cta-btn {
+              background: linear-gradient(135deg, #F0B429, #E8950A);
+              color: #0C1B33;
+              border: none;
+              border-radius: 14px;
+              padding: 16px 40px;
+              font-size: 18px;
+              font-weight: 800;
+              font-family: 'Vazirmatn', 'Tahoma', sans-serif;
+              cursor: pointer;
+              transition: all 0.25s ease;
+              letter-spacing: 0.5px;
+              box-shadow: 0 6px 24px rgba(240, 180, 41, 0.35);
+            }
+            .cta-btn:hover {
+              transform: translateY(-2px) scale(1.03);
+              box-shadow: 0 10px 30px rgba(240, 180, 41, 0.5);
+            }
+            .feature-item {
+              display: flex;
+              align-items: center;
+              gap: 8px;
+              color: rgba(255,255,255,0.75);
+              font-size: 13px;
+            }
+            .live-badge {
+              display: inline-flex;
+              align-items: center;
+              gap: 6px;
+              background: rgba(22, 163, 74, 0.2);
+              border: 1px solid rgba(22, 163, 74, 0.5);
+              border-radius: 30px;
+              padding: 4px 14px;
+              color: #4ade80;
+              font-size: 12px;
+              font-weight: 600;
+            }
+            .dot-pulse {
+              width: 8px;
+              height: 8px;
+              border-radius: 50%;
+              background: #4ade80;
+              box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.4);
+              animation: pulse-anim 1.5s infinite;
+            }
+            @keyframes pulse-anim {
+              0% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.5); }
+              70% { box-shadow: 0 0 0 8px rgba(74, 222, 128, 0); }
+              100% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0); }
+            }
+            .banner-container {
+              max-width: 980px;
+              width: 100%;
+              border-radius: 28px;
+              overflow: hidden;
+              background: linear-gradient(135deg, #112240 0%, #1B3A6A 50%, #0C2040 100%);
+              border: 1px solid rgba(255,255,255,0.10);
+              box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+              position: relative;
+            }
+            .glow-orb {
+              position: absolute;
+              border-radius: 50%;
+              filter: blur(80px);
+              pointer-events: none;
+            }
+            .divider {
+              height: 1px;
+              background: linear-gradient(90deg, transparent, rgba(240,180,41,0.3), transparent);
+              margin: 0 40px;
+            }
+          `
+        ),
+        // Main banner container
+        React.createElement(
+          "div",
+          { className: "banner-container" },
+          // Background glowing orbs
+          React.createElement("div", {
+            className: "glow-orb",
+            style: { width: 320, height: 320, background: "rgba(240,180,41,0.08)", top: -80, right: -80 }
+          }),
+          React.createElement("div", {
+            className: "glow-orb",
+            style: { width: 240, height: 240, background: "rgba(59,130,246,0.10)", bottom: -60, left: -40 }
+          }),
+          // Header section
+          React.createElement(
+            "div",
+            { style: { padding: "40px 44px 32px" } },
+            React.createElement(
+              "div",
+              { style: { display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 16 } },
+              // Right side: text content
+              React.createElement(
+                "div",
+                { style: { flex: "1 1 340px", maxWidth: 520 } },
+                // Live badge
+                React.createElement(
+                  "div",
+                  { style: { marginBottom: 16 } },
+                  React.createElement(
+                    "span",
+                    { className: "live-badge" },
+                    React.createElement("span", { className: "dot-pulse" }),
+                    "همین الان آنلاین هستیم"
+                  )
+                ),
+                // Main heading
+                React.createElement(
+                  "h1",
+                  {
+                    style: {
+                      color: "#FFFFFF",
+                      fontSize: "clamp(26px, 4vw, 38px)",
+                      fontWeight: 900,
+                      lineHeight: 1.4,
+                      margin: "0 0 12px",
+                      letterSpacing: "-0.5px",
+                    },
+                  },
+                  "کارهات رو از خونه ",
+                  React.createElement("span", { style: { color: "#F0B429", position: "relative" } }, "انجام بده!")
+                ),
+                // Description paragraph
+                React.createElement(
+                  "p",
+                  {
+                    style: {
+                      color: "rgba(255,255,255,0.70)",
+                      fontSize: "16px",
+                      lineHeight: 1.9,
+                      margin: "0 0 24px",
+                      fontWeight: 400,
+                    },
+                  },
+                  "بدون مراجعه به کافی‌نت، تمام خدمات اینترنتی و ثبت‌نام‌های دولتی را به‌صورت ",
+                  React.createElement("strong", { style: { color: "#F0B429" } }, "کاملاً آنلاین"),
+                  " و در کمترین زمان انجام بده."
+                ),
+                // Features list
+                React.createElement(
+                  "div",
+                  { style: { display: "flex", flexWrap: "wrap", gap: "12px 24px", marginBottom: 28 } },
+                  features.map((f, idx) =>
+                    React.createElement(
+                      "div",
+                      { key: idx, className: "feature-item" },
+                      React.createElement("span", { style: { fontSize: 15 } }, f.icon),
+                      React.createElement("span", null, f.text)
+                    )
+                  )
+                ),
+                // Action buttons
+                React.createElement(
+                  "div",
+                  { style: { display: "flex", gap: 14, flexWrap: "wrap" } },
+                  React.createElement(
+                    "button",
+                    { className: "cta-btn",
+                      onClick:() => {
+                        window.location.href = "https://hearian.ir/form.html";
+                    }},
+                    "ثبت سفارش رایگان"),
+                //   React.createElement(
+                //     "button",
+                //     {
+                //       style: {
+                //         background: "transparent",
+                //         border: "1.5px solid rgba(255,255,255,0.25)",
+                //         borderRadius: 14,
+                //         padding: "16px 28px",
+                //         color: "rgba(255,255,255,0.85)",
+                //         fontSize: 15,
+                //         fontWeight: 600,
+                //         fontFamily: "'Vazirmatn','Tahoma',sans-serif",
+                //         cursor: "pointer",
+                //         transition: "all 0.2s",
+                //       },
+                //       onClick:() => {
+                //         window.location.href = "";
+                //     }},
+                //     "مشاوره رایگان"
+                //   )
+                )
+              ),
+              // Left side: brand logo box
+              React.createElement(
+                "div",
+                {
+                  style: {
+                    flex: "0 0 auto",
+                    background: "rgba(255,255,255,0.05)",
+                    border: "1px solid rgba(255,255,255,0.12)",
+                    borderRadius: 20,
+                    padding: "28px 32px",
+                    textAlign: "center",
+                    backdropFilter: "blur(8px)",
+                  },
+                },
+                React.createElement(
+                  "div",
+                  {
+                    style: {
+                      width: 70,
+                      height: 70,
+                      background: "linear-gradient(135deg,#F0B429,#E8950A)",
+                      borderRadius: 18,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontSize: 36,
+                      margin: "0 auto 12px",
+                      boxShadow: "0 8px 24px rgba(240,180,41,0.4)",
+                    },
+                  },
+                  "💻"
+                ),
+                React.createElement("div", { style: { color: "#FFFFFF", fontWeight: 800, fontSize: 18, marginBottom: 4 } }, "خدمات آنلاین"),
+                React.createElement("div", { style: { color: "#F0B429", fontWeight: 600, fontSize: 13, marginBottom: 14 } }, "کافی‌نت آنلاین شما"),
+                React.createElement(
+                  "div",
+                  {
+                    style: {
+                      background: "rgba(240,180,41,0.1)",
+                      border: "1px solid rgba(240,180,41,0.3)",
+                      borderRadius: 10,
+                      padding: "8px 16px",
+                    },
+                  },
+                  React.createElement("div", { style: { color: "#F0B429", fontWeight: 800, fontSize: 22 } }, "+۵۰۰"),
+                  React.createElement("div", { style: { color: "rgba(255,255,255,0.6)", fontSize: 11, marginTop: 2 } }, "نوع خدمت")
+                )
+              )
+            )
+          ),
+          // Divider
+          React.createElement("div", { className: "divider" }),
+          // Services grid section
+          React.createElement(
+            "div",
+            { style: { padding: "28px 44px 40px" } },
+            React.createElement(
+              "div",
+              { style: { color: "rgba(255,255,255,0.45)", fontSize: 12, fontWeight: 600, marginBottom: 18, letterSpacing: "0.5px" } },
+              "برخی از خدمات ما ↓"
+            ),
+            React.createElement(
+              "div",
+              { style: { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(100px, 1fr))", gap: 10 } },
+              services.map((s, idx) => {
+                const isVisible = visibleCards.includes(idx);
+                return React.createElement(
+                  "div",
+                  {
+                    key: idx,
+                    className: `service-card ${isVisible ? "visible" : ""}`,
+                    style: { transition: `all 0.35s ease ${idx * 0.05}s` },
+                  },
+                  React.createElement("div", { style: { fontSize: 26, marginBottom: 8 } }, s.icon),
+                  React.createElement(
+                    "div",
+                    {
+                      style: {
+                        color: "rgba(255,255,255,0.85)",
+                        fontSize: 11.5,
+                        fontWeight: 600,
+                        lineHeight: 1.5,
+                        whiteSpace: "pre-line",
+                      },
+                    },
+                    s.label
+                  )
+                );
+              })
+            )
+          ),
+          // Footer strip
+          React.createElement(
+            "div",
+            {
+              style: {
+                background: "rgba(240,180,41,0.08)",
+                borderTop: "1px solid rgba(240,180,41,0.15)",
+                padding: "16px 44px",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                flexWrap: "wrap",
+                gap: 12,
+              },
+            },
+            React.createElement(
+              "div",
+              { style: { display: "flex", gap: 24, flexWrap: "wrap" }},
+              [
+                {name : "تلگرام", url : "https://t.me/Avaz_support"},
+                {name : "روبیکا", url : "https://rubika.ir/Avaz_support"},
+                {name : "ایتا", url : "https://eitaa.com/avaz_support"
+                }].map((app , i) =>
+                React.createElement(
+                  "a",
+                  {
+                    key: i,
+                    href: app.url,
+                    target: "_blank",
+                    rel: "noopener noreferrer",
+                    style: {
+                        color: "rgba(255,255,255,0.55)",
+                        fontSize: 12,
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 5,
+                        cursor: "pointer",
+                        transition: "all 0.2s ease"
+                    },
+                    onMouseEnter: (e) => {
+                        e.currentTarget.style.color = "#F0B429";
+                    },
+                    onMouseLeave: (e) => {
+                        e.currentTarget.style.color = "rgba(255,255,255,0.55)"
+                    }
+                  },
+                  React.createElement("span", { style: { fontSize: 14,color: "#F0B429" } }, "●"),
+                  app.name
+                )
+              )
+            ),
+            React.createElement(
+              "div",
+              { style: { color: "rgba(255,255,255,0.45)", fontSize: 12 } },
+              "سفارش از طریق پیام‌رسان‌های فوق"
+            )
+          )
+        )
+      );
+    }
+
+    const rootElement = document.getElementById("cafeBannerRoot");
+    const root = ReactDOM.createRoot(rootElement);
+    root.render(React.createElement(CafeBanner));
