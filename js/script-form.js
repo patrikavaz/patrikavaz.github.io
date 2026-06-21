@@ -1,204 +1,75 @@
-// ============================================
-// تنظیمات اولیه
-// ============================================
-const STORAGE_KEY = 'user_data_list';
-const form = document.getElementById('infoForm');
-const messageEl = document.getElementById('message');
-const dataListEl = document.getElementById('dataList');
+// ---- generate a friendly tracking number for this visit ----
+const ticketEl = document.getElementById('ticketId');
+const ticketNumber = Math.floor(10000 + Math.random() * 89999);
+ticketEl.textContent = '#KF-' + ticketNumber;
+
+
+const WEB3FORMS_ACCESS_KEY = "bb273da0-ac18-44a1-ac52-5f3a514cb3a7";
+
+const form = document.getElementById('requestForm');
 const submitBtn = document.getElementById('submitBtn');
+const btnLabel = document.getElementById('btnLabel');
+const btnIcon = document.getElementById('btnIcon');
+const statusMsg = document.getElementById('statusMsg');
 
-// ============================================
-// توابع مدیریت localStorage
-// ============================================
-
-// دریافت اطلاعات از localStorage
-function getData() {
-    try {
-        const data = localStorage.getItem(STORAGE_KEY);
-        return data ? JSON.parse(data) : [];
-    } catch (error) {
-        console.error('خطا در خواندن داده:', error);
-        return [];
-    }
+function showStatus(type, text){
+  statusMsg.textContent = text;
+  statusMsg.className = 'status-msg show ' + type;
 }
 
-// ذخیره اطلاعات در localStorage
-function saveData(data) {
-    try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-    } catch (error) {
-        console.error('خطا در ذخیره داده:', error);
-        showMessage('❌ خطا در ذخیره اطلاعات در مرورگر', 'error');
-    }
+function setLoading(loading){
+  submitBtn.disabled = loading;
+  if(loading){
+    btnLabel.textContent = 'در حال ارسال...';
+    btnIcon.outerHTML = '<span class="spinner" id="btnIcon"></span>';
+  } else {
+    btnLabel.textContent = 'ثبت سفارش رایگان';
+    document.getElementById('btnIcon').outerHTML =
+      '<svg id="btnIcon" viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="11 18 5 12 11 6"></polyline></svg>';
+  }
 }
 
-// ============================================
-// توابع نمایش اطلاعات
-// ============================================
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  statusMsg.classList.remove('show');
 
-// نمایش لیست اطلاعات ذخیره شده
-function displayData() {
-    const data = getData();
-    
-    if (data.length === 0) {
-        dataListEl.innerHTML = '<p class="empty-message">📭 هنوز اطلاعاتی ذخیره نشده است.</p>';
-        return;
+  if (WEB3FORMS_ACCESS_KEY === "YOUR_WEB3FORMS_ACCESS_KEY"){
+    showStatus('err', 'برای فعال‌سازی فرم، کلید Web3Forms رو داخل کد جایگذاری کن.');
+    return;
+  }
+
+  const payload = {
+    access_key: WEB3FORMS_ACCESS_KEY,
+    subject: 'درخواست جدید خدمت — کافی‌نت آنلاین',
+    from_name: 'فرم سایت کافی‌نت',
+    ticket_id: ticketEl.textContent,
+    name: form.name.value,
+    phone: form.phone.value,
+    service: form.service.value,
+    message: form.message.value,
+    botcheck: form.botcheck.value
+  };
+
+  setLoading(true);
+
+  try {
+    const res = await fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+
+    if (data.success){
+      showStatus('ok', 'درخواستت با کد پیگیری ' + ticketEl.textContent + ' ثبت شد. به‌زودی باهات تماس می‌گیریم.');
+      form.reset();
+      ticketEl.textContent = '#KF-' + Math.floor(10000 + Math.random() * 89999);
+    } else {
+      showStatus('err', 'ارسال درخواست با خطا مواجه شد. لطفاً دوباره تلاش کن.');
     }
-    
-    // نمایش به ترتیب جدیدترین (برعکس)
-    const reversedData = [...data].reverse();
-    dataListEl.innerHTML = reversedData.map((item, index) => {
-        const originalIndex = data.length - 1 - index;
-        return `
-            <div class="data-item">
-                <button class="delete-btn" onclick="deleteData(${originalIndex})">🗑️ حذف</button>
-                <div class="text-content"><strong>متن:</strong> ${escapeHtml(item.text)}</div>
-                <div class="number-content"><strong>شماره:</strong> ${item.number}</div>
-                <span class="timestamp">📅 ${new Date(item.timestamp).toLocaleString('fa-IR')}</span>
-            </div>
-        `;
-    }).join('');
-}
-
-// جلوگیری از حملات XSS
-function escapeHtml(text) {
-    const div = document.createElement('div');
-    div.textContent = text;
-    return div.innerHTML;
-}
-
-// ============================================
-// توابع مدیریت داده‌ها
-// ============================================
-
-// حذف یک آیتم
-function deleteData(index) {
-    if (!confirm('⚠️ آیا مطمئنید می‌خواهید این آیتم را حذف کنید؟')) {
-        return;
-    }
-    
-    const data = getData();
-    data.splice(index, 1);
-    saveData(data);
-    displayData();
-    showMessage('🗑️ آیتم با موفقیت حذف شد.', 'success');
-}
-
-// اضافه کردن داده جدید
-function addData(text, number) {
-    const data = getData();
-    const newData = {
-        text: text.trim(),
-        number: parseInt(number),
-        timestamp: Date.now()
-    };
-    data.push(newData);
-    saveData(data);
-    displayData();
-}
-
-// ============================================
-// توابع پیام و اطلاع‌رسانی
-// ============================================
-
-function showMessage(msg, type) {
-    messageEl.textContent = msg;
-    messageEl.className = 'message ' + type;
-    
-    // بعد از ۷ ثانیه پیام رو مخفی کن (به جز خطاها)
-    if (type !== 'error') {
-        clearTimeout(messageEl._timeout);
-        messageEl._timeout = setTimeout(() => {
-            messageEl.className = 'message';
-        }, 7000);
-    }
-}
-
-// ============================================
-// مدیریت ارسال فرم
-// ============================================
-
-form.addEventListener('submit', async function(e) {
-    e.preventDefault();
-    
-    // گرفتن مقادیر فیلدها
-    const textInfo = document.getElementById('textInfo').value.trim();
-    const numberInfo = document.getElementById('numberInfo').value.trim();
-    
-    // اعتبارسنجی سمت کلاینت
-    if (!textInfo || !numberInfo) {
-        showMessage('❌ لطفاً تمام فیلدهای اجباری را پر کنید!', 'error');
-        return;
-    }
-    
-    if (isNaN(numberInfo) || parseInt(numberInfo) <= 0) {
-        showMessage('❌ لطفاً یک شماره معتبر (بزرگتر از صفر) وارد کنید!', 'error');
-        return;
-    }
-    
-    // نمایش وضعیت در حال ارسال
-    showMessage('⏳ در حال ارسال اطلاعات به ایمیل...', 'loading');
-    submitBtn.disabled = true;
-    submitBtn.textContent = '⏳ در حال ارسال...';
-    
-    try {
-        // ارسال به Web3Forms
-        const formData = new FormData(form);
-        const response = await fetch(form.action, {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'Accept': 'application/json'
-            }
-        });
-        
-        const result = await response.json();
-        
-        if (result.success) {
-            // ذخیره در localStorage
-            addData(textInfo, numberInfo);
-            
-            showMessage('✅ اطلاعات با موفقیت ارسال و ذخیره شد!', 'success');
-            form.reset();
-        } else {
-            showMessage('❌ خطا در ارسال: ' + (result.message || 'مشکل ناشناخته'), 'error');
-        }
-    } catch (error) {
-        showMessage('❌ خطا در ارتباط با سرور: ' + error.message, 'error');
-        console.error('خطای ارسال:', error);
-    } finally {
-        // فعال کردن مجدد دکمه
-        submitBtn.disabled = false;
-        submitBtn.textContent = '📧 ارسال اطلاعات';
-    }
+  } catch (err){
+    showStatus('err', 'مشکل در اتصال به اینترنت. لطفاً دوباره تلاش کن.');
+  } finally {
+    setLoading(false);
+  }
 });
-
-// ============================================
-// بارگذاری اولیه
-// ============================================
-
-// نمایش اطلاعات ذخیره شده در localStorage
-displayData();
-
-// ============================================
-// (اختیاری) اعتبارسنجی بلادرنگ
-// ============================================
-
-// محدود کردن فیلد شماره به اعداد مثبت
-document.getElementById('numberInfo').addEventListener('input', function() {
-    if (this.value < 0) {
-        this.value = 1;
-    }
-});
-
-// نمایش تعداد کاراکترهای باقیمانده برای فیلد متن
-document.getElementById('textInfo').addEventListener('input', function() {
-    const maxLength = 500;
-    if (this.value.length > maxLength) {
-        this.value = this.value.substring(0, maxLength);
-        showMessage(`⚠️ متن نمی‌تواند بیشتر از ${maxLength} کاراکتر باشد.`, 'error');
-    }
-});
-
-console.log('✅ فرم با موفقیت بارگذاری شد!');
-console.log(`📊 تعداد اطلاعات ذخیره شده: ${getData().length}`);
